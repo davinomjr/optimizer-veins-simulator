@@ -17,13 +17,13 @@ def writeResults results
   format.set_allign("center")
 
   worksheet.write(resultRow, 0, "simulacao", format)
-  worksheet.write(resultRow, 1, "cMIn", format)
-  worksheet.write(resultRow, 2, "cMax", format)
-  worksheet.write(resultRow, 3, "slottime", format)
-  worksheet.write(resultRow, 4, "txPower", format)
-  worksheet.write(resultRow, 5, "delay medio", format)
-  worksheet.write(resultRow, 6, "total lost packets medio", format)
-  worksheet.write(resultRow, 7, "throughput medio", format)
+  worksheet.write(resultRow, 1, "CwMin", format)
+  worksheet.write(resultRow, 2, "CwMax", format)
+  worksheet.write(resultRow, 3, "Slotlength", format)
+  worksheet.write(resultRow, 4, "TxPower", format)
+  worksheet.write(resultRow, 5, "Delay Médio", format)
+  worksheet.write(resultRow, 6, "Perda Média", format)
+  worksheet.write(resultRow, 7, "Throughput Médio", format)
 
   resultRow += 1
   
@@ -51,14 +51,14 @@ end
 cwMin = 16
 cwMax = 1024
 slotlength = 5
-txPower = 30
+txPower = 10
 
 simulator = Simulator.new()
 simulationResults = []
 
 
 runsCount = 0
-simulationsCount = 2
+simulationsCount = 5
 while runsCount < simulationsCount do
 
   # Alteração de parametros de configuracao e rodar simulacao
@@ -74,8 +74,7 @@ while runsCount < simulationsCount do
 
 
   #Logica pra variar parametros do omnet
-  #Exemplo: Iterar a cada 30
-  txPower += 30
+  slotlength *= 5
   
   runsCount += 1
 end

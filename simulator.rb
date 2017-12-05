@@ -24,9 +24,9 @@ def run_simulation
      resultsFileName = path_to_results + 'v1-cwmin%s-cwmax%s-slotlength%s-txPower%s.sca' % [@cwmin.to_s, @cwmax.to_s, @slotlength.to_s, @txPower.to_s]
  
      nodeCount = 0
-     delayMedioFinal = 0.0
-     totalLastPacketsFinal = 0.0
-     totalThroughputFinal = 0.0
+     totalDelay = 0.0
+     totalLostPacket = 0.0
+     totalThroughput = 0.0
 
      File.open(resultsFileName, 'r+') do |f|
        f.each do |line|         
@@ -36,33 +36,33 @@ def run_simulation
          end
          
          if line.include? "delayMedio"
-           delayMedioFinal += line[/(?<=delayMedio).*/].strip.to_f
+           totalDelay  += line[/(?<=delayMedio).*/].strip.to_f
          end 
 
          if line.include? "TotalLostPackets"
-           totalLastPacketsFinal += line[/(?<=TotalLostPackets).*/].strip.to_f
+           totalLostPacket += line[/(?<=TotalLostPackets).*/].strip.to_f
          end
 
          if line.include? "throughputMedioBPS"
-           totalThroughputFinal += line[/(?<=throughputMedioBPS).*/].strip.to_f
+           totalThroughput  += line[/(?<=throughputMedioBPS).*/].strip.to_f
          end
          
        end
      end
 
 
-     delayMedio = (delayMedioFinal / nodeCount).to_s
-     totalLostPacketMedio = (totalLastPacketsFinal / nodeCount).to_s
-     throughputMedio  = (totalThroughputFinal / nodeCount).to_s
+     averageDelay = (totalDelay / nodeCount).to_s
+     averageLostPacket  = (totalLostPacket / nodeCount).to_s
+     averageThroughput  = (totalThroughput / nodeCount).to_s
      
      ##### Gerando resultados da simulacao #####
      puts "Node vehicles count = " + nodeCount.to_s + "\n"
-     puts "Delay medio final = " + delayMedio
-     puts "Total lost packets final = " + totalLostPacketMedio
-     puts "Throughput final = " + throughputMedio
+     puts "Delay medio final = " + averageDelay
+     puts "Total lost packets final = " + averageLostPacket
+     puts "Throughput final = " + averageThroughput
 
 
-     result = SimulationResult.new(delayMedio, totalLostPacketMedio, throughputMedio)
+     result = SimulationResult.new(averageDelay, averageLostPacket, averageThroughput)
 
      return result
 end
@@ -79,8 +79,7 @@ def change_omnet_config (cwmin, cwmax, slotlength, txPower)
  new_config = new_config.gsub(/(?<=\${slotlength=)(.*)(?=})/, slotlength.to_s)
  new_config = new_config.gsub(/(?<=\${txPower=)(.*)(?=})/, txPower.to_s)
 
- # To write changes to the file, use:
- File.open(configFileName, "w") {|file| file.puts new_config }
+  File.open(configFileName, "w") {|file| file.puts new_config }
 
   @cwmin = cwmin
   @cwmax = cwmax

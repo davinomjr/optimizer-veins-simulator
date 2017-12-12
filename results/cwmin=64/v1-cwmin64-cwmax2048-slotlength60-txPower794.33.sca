@@ -1,0 +1,189 @@
+version 2
+run v1-153-20171208-03:43:43-11303
+attr configname v1
+attr cwmax 2048
+attr cwmin 64
+attr datetime 20171208-03:43:43
+attr experiment v1
+attr inifile omnetpp.ini
+attr iterationvars "$cwmin=64, $cwmax=2048, $slotlength=60, $txPower=794.33"
+attr iterationvars2 "$cwmin=64, $cwmax=2048, $slotlength=60, $txPower=794.33, $repetition=0"
+attr measurement "$cwmin=64, $cwmax=2048, $slotlength=60, $txPower=794.33"
+attr network RSUExampleScenario2
+attr processid 11303
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 153
+attr seedset 153
+attr slotlength 60
+attr txPower 794.33
+param **.coreDebug true
+param **.debug true
+param *.**.nic.mac1609_4.bitrate 6Mbps
+param *.**.nic.mac1609_4.cwmax_ "${cwmax=2048, 4096}"
+param *.**.nic.mac1609_4.cwmin_ ${cwmin=64}
+param *.**.nic.mac1609_4.slotlength_ "${slotlength=5..100 step 5}ms"
+param *.**.nic.mac1609_4.txPower "${txPower=1.26, 2.51, 3.98, 10, 15.85, 25.12, 50.12, 100, 251.19, 501.19, 794.33, 1258.93, 1584.89}mW"
+param *.**.nic.mac1609_4.useServiceChannel false
+param *.**.nic.phy80211p.analogueModels "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.decider "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.sensitivity -89dBm
+param *.**.nic.phy80211p.thermalNoise -110dBm
+param *.**.nic.phy80211p.usePropagationDelay true
+param *.**.nic.phy80211p.useThermalNoise true
+param *.annotations.draw false
+param *.connectionManager.alpha 2.0
+param *.connectionManager.carrierFrequency "5.890e9 Hz"
+param *.connectionManager.drawMaxIntfDist false
+param *.connectionManager.maxInterfDist 2600m
+param *.connectionManager.pMax 20mW
+param *.connectionManager.sat -89dBm
+param *.connectionManager.sendDirect true
+param *.manager.autoShutdown true
+param *.manager.host "\"localhost\""
+param *.manager.launchConfig "xmldoc(\"osm.launchd.xml\")"
+param *.manager.margin 25
+param *.manager.moduleDisplayString "\"\""
+param *.manager.moduleName "\"node\""
+param *.manager.moduleType "\"org.car2x.veins.nodes.Car\""
+param *.manager.port 9999
+param *.manager.updateInterval 1s
+param *.node[*].appl.beaconInterval "0.1 s"
+param *.node[*].appl.beaconLengthBits "3960 bit"
+param *.node[*].appl.beaconPriority 3
+param *.node[*].appl.dataLengthBits "3960 bit"
+param *.node[*].appl.dataOnSch false
+param *.node[*].appl.dataPriority 2
+param *.node[*].appl.debug false
+param *.node[*].appl.headerLength "80 bit"
+param *.node[*].appl.maxOffset "0.005 s"
+param *.node[*].appl.sendBeacons true
+param *.node[*].appl.sendData false
+param *.node[*].applType "\"TraCIDemo11p\""
+param *.node[*].mobilityType "\"TraCIMobility\""
+param *.node[*].mobilityType.debug true
+param *.node[*].veinsmobility.x 0
+param *.node[*].veinsmobility.y 0
+param *.node[*].veinsmobility.z 1.895
+param *.node[*].veinsmobilityType "\"org.car2x.veins.modules.mobility.traci.TraCIMobility\""
+param *.node[*].veinsmobilityType.debug true
+param *.obstacles.debug false
+param *.playgroundSizeX 2000m
+param *.playgroundSizeY 2000m
+param *.playgroundSizeZ 50m
+param *.world.use2D false
+param *.world.useTorus false
+
+scalar . 	cwmax 	2048
+scalar . 	cwmin 	64
+scalar . 	slotlength 	60
+scalar . 	txPower 	794.33
+scalar RSUExampleScenario2.node[6].nic.mac1609_4 	TotalLostPackets 	0
+scalar RSUExampleScenario2.node[6].nic.mac1609_4 	delayMedio 	0.000723260174
+scalar RSUExampleScenario2.node[6].nic.mac1609_4 	throughputMedioBPS 	5663245.5994653
+scalar RSUExampleScenario2.node[5].nic.mac1609_4 	TotalLostPackets 	0
+scalar RSUExampleScenario2.node[5].nic.mac1609_4 	delayMedio 	0.00564311612
+scalar RSUExampleScenario2.node[5].nic.mac1609_4 	throughputMedioBPS 	725840.10549615
+scalar RSUExampleScenario2.node[0].nic.mac1609_4 	TotalLostPackets 	0
+scalar RSUExampleScenario2.node[0].nic.mac1609_4 	delayMedio 	0.005489224327
+scalar RSUExampleScenario2.node[0].nic.mac1609_4 	throughputMedioBPS 	746189.21657175
+scalar RSUExampleScenario2.node[14].nic.mac1609_4 	TotalLostPackets 	2
+scalar RSUExampleScenario2.node[14].nic.mac1609_4 	delayMedio 	0.00627951498
+scalar RSUExampleScenario2.node[14].nic.mac1609_4 	throughputMedioBPS 	652279.67652394
+scalar RSUExampleScenario2.node[7].nic.mac1609_4 	TotalLostPackets 	1
+scalar RSUExampleScenario2.node[7].nic.mac1609_4 	delayMedio 	0.005454213702
+scalar RSUExampleScenario2.node[7].nic.mac1609_4 	throughputMedioBPS 	750979.00886133
+scalar RSUExampleScenario2.node[2].nic.mac1609_4 	TotalLostPackets 	1
+scalar RSUExampleScenario2.node[2].nic.mac1609_4 	delayMedio 	0.005197482087
+scalar RSUExampleScenario2.node[2].nic.mac1609_4 	throughputMedioBPS 	788073.90417751
+scalar RSUExampleScenario2.node[8].nic.mac1609_4 	TotalLostPackets 	1
+scalar RSUExampleScenario2.node[8].nic.mac1609_4 	delayMedio 	0.005370243823
+scalar RSUExampleScenario2.node[8].nic.mac1609_4 	throughputMedioBPS 	762721.42099644
+scalar RSUExampleScenario2.node[3].nic.mac1609_4 	TotalLostPackets 	82
+scalar RSUExampleScenario2.node[3].nic.mac1609_4 	delayMedio 	0.004524011718
+scalar RSUExampleScenario2.node[3].nic.mac1609_4 	throughputMedioBPS 	905391.11194438
+scalar RSUExampleScenario2.node[11].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[11].nic.mac1609_4 	delayMedio 	0.005087516286
+scalar RSUExampleScenario2.node[11].nic.mac1609_4 	throughputMedioBPS 	805107.98777165
+scalar RSUExampleScenario2.node[17].nic.mac1609_4 	TotalLostPackets 	151
+scalar RSUExampleScenario2.node[17].nic.mac1609_4 	delayMedio 	0.00259341891
+scalar RSUExampleScenario2.node[17].nic.mac1609_4 	throughputMedioBPS 	1579382.3295795
+scalar RSUExampleScenario2.node[27].nic.mac1609_4 	TotalLostPackets 	161
+scalar RSUExampleScenario2.node[27].nic.mac1609_4 	delayMedio 	0.004829968634
+scalar RSUExampleScenario2.node[27].nic.mac1609_4 	throughputMedioBPS 	848038.63339917
+scalar RSUExampleScenario2.node[12].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[12].nic.mac1609_4 	delayMedio 	0.005093246106
+scalar RSUExampleScenario2.node[12].nic.mac1609_4 	throughputMedioBPS 	804202.25431757
+scalar RSUExampleScenario2.node[18].nic.mac1609_4 	TotalLostPackets 	161
+scalar RSUExampleScenario2.node[18].nic.mac1609_4 	delayMedio 	0.002791542165
+scalar RSUExampleScenario2.node[18].nic.mac1609_4 	throughputMedioBPS 	1467289.3182606
+scalar RSUExampleScenario2.node[22].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[22].nic.mac1609_4 	delayMedio 	0.003387805188
+scalar RSUExampleScenario2.node[22].nic.mac1609_4 	throughputMedioBPS 	1209042.3661106
+scalar RSUExampleScenario2.node[28].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[28].nic.mac1609_4 	delayMedio 	0.004778181795
+scalar RSUExampleScenario2.node[28].nic.mac1609_4 	throughputMedioBPS 	857229.83674066
+scalar RSUExampleScenario2.node[33].nic.mac1609_4 	TotalLostPackets 	80
+scalar RSUExampleScenario2.node[33].nic.mac1609_4 	delayMedio 	0.000751200317
+scalar RSUExampleScenario2.node[33].nic.mac1609_4 	throughputMedioBPS 	5452606.8561778
+scalar RSUExampleScenario2.node[1].nic.mac1609_4 	TotalLostPackets 	82
+scalar RSUExampleScenario2.node[1].nic.mac1609_4 	delayMedio 	0.004496560895
+scalar RSUExampleScenario2.node[1].nic.mac1609_4 	throughputMedioBPS 	910918.38753704
+scalar RSUExampleScenario2.node[29].nic.mac1609_4 	TotalLostPackets 	161
+scalar RSUExampleScenario2.node[29].nic.mac1609_4 	delayMedio 	0.004827927889
+scalar RSUExampleScenario2.node[29].nic.mac1609_4 	throughputMedioBPS 	848397.0958264
+scalar RSUExampleScenario2.node[34].nic.mac1609_4 	TotalLostPackets 	159
+scalar RSUExampleScenario2.node[34].nic.mac1609_4 	delayMedio 	0.000751367542
+scalar RSUExampleScenario2.node[34].nic.mac1609_4 	throughputMedioBPS 	5451393.3228221
+scalar RSUExampleScenario2.node[9].nic.mac1609_4 	TotalLostPackets 	130
+scalar RSUExampleScenario2.node[9].nic.mac1609_4 	delayMedio 	0.004777825157
+scalar RSUExampleScenario2.node[9].nic.mac1609_4 	throughputMedioBPS 	857293.82417836
+scalar RSUExampleScenario2.node[15].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[15].nic.mac1609_4 	delayMedio 	0.005228774263
+scalar RSUExampleScenario2.node[15].nic.mac1609_4 	throughputMedioBPS 	783357.58897455
+scalar RSUExampleScenario2.node[20].nic.mac1609_4 	TotalLostPackets 	161
+scalar RSUExampleScenario2.node[20].nic.mac1609_4 	delayMedio 	0.003228761143
+scalar RSUExampleScenario2.node[20].nic.mac1609_4 	throughputMedioBPS 	1268598.0221066
+scalar RSUExampleScenario2.node[23].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[23].nic.mac1609_4 	delayMedio 	0.003377592883
+scalar RSUExampleScenario2.node[23].nic.mac1609_4 	throughputMedioBPS 	1212697.9604667
+scalar RSUExampleScenario2.node[25].nic.mac1609_4 	TotalLostPackets 	121
+scalar RSUExampleScenario2.node[25].nic.mac1609_4 	delayMedio 	0.003640162544
+scalar RSUExampleScenario2.node[25].nic.mac1609_4 	throughputMedioBPS 	1125224.4782975
+scalar RSUExampleScenario2.node[4].nic.mac1609_4 	TotalLostPackets 	82
+scalar RSUExampleScenario2.node[4].nic.mac1609_4 	delayMedio 	0.004559502829
+scalar RSUExampleScenario2.node[4].nic.mac1609_4 	throughputMedioBPS 	898343.55930087
+scalar RSUExampleScenario2.node[19].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[19].nic.mac1609_4 	delayMedio 	0.002954465838
+scalar RSUExampleScenario2.node[19].nic.mac1609_4 	throughputMedioBPS 	1386375.8205924
+scalar RSUExampleScenario2.node[21].nic.mac1609_4 	TotalLostPackets 	130
+scalar RSUExampleScenario2.node[21].nic.mac1609_4 	delayMedio 	0.002953034009
+scalar RSUExampleScenario2.node[21].nic.mac1609_4 	throughputMedioBPS 	1387048.0283827
+scalar RSUExampleScenario2.node[24].nic.mac1609_4 	TotalLostPackets 	161
+scalar RSUExampleScenario2.node[24].nic.mac1609_4 	delayMedio 	0.003750410352
+scalar RSUExampleScenario2.node[24].nic.mac1609_4 	throughputMedioBPS 	1092147.1561153
+scalar RSUExampleScenario2.node[26].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[26].nic.mac1609_4 	delayMedio 	0.004152934189
+scalar RSUExampleScenario2.node[26].nic.mac1609_4 	throughputMedioBPS 	986290.61126161
+scalar RSUExampleScenario2.node[30].nic.mac1609_4 	TotalLostPackets 	130
+scalar RSUExampleScenario2.node[30].nic.mac1609_4 	delayMedio 	0.004472792935
+scalar RSUExampleScenario2.node[30].nic.mac1609_4 	throughputMedioBPS 	915758.91375959
+scalar RSUExampleScenario2.node[31].nic.mac1609_4 	TotalLostPackets 	161
+scalar RSUExampleScenario2.node[31].nic.mac1609_4 	delayMedio 	0.005945839122
+scalar RSUExampleScenario2.node[31].nic.mac1609_4 	throughputMedioBPS 	688885.10370292
+scalar RSUExampleScenario2.node[32].nic.mac1609_4 	TotalLostPackets 	160
+scalar RSUExampleScenario2.node[32].nic.mac1609_4 	delayMedio 	0.00075218388
+scalar RSUExampleScenario2.node[32].nic.mac1609_4 	throughputMedioBPS 	5445476.9787397
+scalar RSUExampleScenario2.node[35].nic.mac1609_4 	TotalLostPackets 	60
+scalar RSUExampleScenario2.node[35].nic.mac1609_4 	delayMedio 	0.000750945708
+scalar RSUExampleScenario2.node[35].nic.mac1609_4 	throughputMedioBPS 	5454455.5704018
+scalar RSUExampleScenario2.node[10].nic.mac1609_4 	TotalLostPackets 	162
+scalar RSUExampleScenario2.node[10].nic.mac1609_4 	delayMedio 	0.004866979971
+scalar RSUExampleScenario2.node[10].nic.mac1609_4 	throughputMedioBPS 	841589.65600858
+scalar RSUExampleScenario2.node[13].nic.mac1609_4 	TotalLostPackets 	81
+scalar RSUExampleScenario2.node[13].nic.mac1609_4 	delayMedio 	0.005230010564
+scalar RSUExampleScenario2.node[13].nic.mac1609_4 	throughputMedioBPS 	783172.41421117
+scalar RSUExampleScenario2.node[16].nic.mac1609_4 	TotalLostPackets 	133
+scalar RSUExampleScenario2.node[16].nic.mac1609_4 	delayMedio 	0.002990441437
+scalar RSUExampleScenario2.node[16].nic.mac1609_4 	throughputMedioBPS 	1369697.4464482

@@ -7,6 +7,8 @@
 require 'pry'
 require_relative "dictionary"
 require_relative "results_reader"
+require_relative "gens_writer"
+require_relative "chart_plotter"
 
 # Throughput
 def objective1(vector)
@@ -20,7 +22,7 @@ end
 
 # Perda de pacotes
 def objective3(vector)
-  return vector.inject(0.0) {|sum, x| sum + ((x-3.0)**2.0)}
+  return vector.inject(0.0) {|sum, x| sum + ((x-1.0)**2.0)}
 end
 
 def decode(bitstring, search_space, bits_per_param)
@@ -162,13 +164,27 @@ def weighted_sum(x)
   return x[:objectives].inject(0.0) {|sum, x| sum+x}
 end
 
+def get_paretos(parents)
+  results = []
+  parents.each do |sub|
+    cwmin = AlgorithmDictionary.getCwminValue sub[:bitstring]
+    cwmax = AlgorithmDictionary.getCwmaxValue sub[:bitstring]
+    slotlength = AlgorithmDictionary.getSlotlength sub[:bitstring]
+    txPower = AlgorithmDictionary.getTxPower sub[:bitstring]
+
+    results << ResultsReader.get_sim_results(cwmin, cwmax, slotlength, txPower)
+  end
+  results
+
+end
+
 def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
+  gens = []
+  csv_result_lines = []
+
   pop = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
-
-  puts "population = %s" % [pop]
-  #gets
 
   calculate_objectives(pop, search_space, bits_per_param)
   fast_nondominated_sort(pop)
@@ -187,21 +203,29 @@ def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
     pop = children
     children = reproduce(selected, pop_size, p_cross)    
     calculate_objectives(children, search_space, bits_per_param)
-    best = parents.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
-    best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
+    parents = parents.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}
+    best = parents.first
+    #best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
 
-    bitstring = best.first[1]
+    pareto_results = get_paretos parents
+
     best_cwMin = AlgorithmDictionary.getCwminValue(bitstring)
     best_cwMax = AlgorithmDictionary.getCwmaxValue(bitstring)
     best_slotlength = AlgorithmDictionary.getSlotlength(bitstring)
     best_txPower = AlgorithmDictionary.getTxPower(bitstring)
 
     puts " > gen=#{gen+1}, fronts=#{fronts.size}, best= cwMin(#{best_cwMin.to_s}), cwMax(#{best_cwMax.to_s}), Slotlength(#{best_slotlength.to_s}), TxPower(#{best_txPower.to_s})}"
-
+    sim_results = ResultsReader.get_sim_results(best_cwMin, best_cwMax, best_slotlength, best_txPower)
+    puts sim_results
+    gens << [gen+1, sim_results[0] ]
+    csv_result_lines << "#{gen+1},#{best_cwMin},#{best_cwMax},#{best_slotlength},#{best_txPower},#{sim_results[0].to_s},#{sim_results[1].to_s},#{sim_results[2].to_s}"
   end  
   union = pop + children  
   fronts = fast_nondominated_sort(union)
   parents = select_parents(fronts, pop_size)
+
+  # Montar resultado
+  pareto_results
   return parents
 end
 
@@ -214,6 +238,8 @@ if __FILE__ == $0
   p_cross = 0.98
 
   # Execute
-  search(search_space, max_gens, pop_size, p_cross)
+  search(search_space, max_gens, pop_size, p_cross, gens, csv_result_lines )
+  GensWriter.write_results csv_result_lines
+  Plotter.generate_plots gens, "pareto.png"
   puts "DONE!"
 end

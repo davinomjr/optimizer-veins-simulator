@@ -3,14 +3,10 @@ require 'pry'
 class AlgorithmDictionary
 
   @@cwMinDisc = {
-      "000" => 16,
-      "001" => 16,
-      "010" => 32,
-      "011" => 32,
-      "100" => 64,
-      "101" => 128,
-      "110" => 256,
-      "111" => 512
+      "00" => 32,
+      "01" => 64,
+      "10" => 256,
+      "11" => 512
   }
 
   @@cwMaxDisc = {
@@ -68,41 +64,57 @@ class AlgorithmDictionary
   }
 
   @@txPowerDisc = {
-      "0000" => 1.26,
-      "0001" => 2.51,
-      "0010" => 3.98,
-      "0011" => 10,
-      "0100" => 15.85,
-      "0101" => 25.12,
-      "0110" => 50.12,
-      "0111" => 100,
-      "1000" => 251.19,
-      "1001" => 501.19,
-      "1010" => 794.33,
-      "1011" => 794.33,
-      "1100" => 1258.93,
-      "1101" => 1258.93,
-      "1110" => 1584.89,
-      "1111" => 1584.89
+      "00000" => 1.26,
+      "00001" => 1.26,
+      "00010" => 2.51,
+      "00011" => 2.51,
+      "00100" => 2.51,
+      "00101" => 3.98,
+      "00110" => 3.98,
+      "00111" => 3.98,
+      "01000" => 10,
+      "01001" => 10,
+      "01010" => 15.85,
+      "01011" => 15.85,
+      "01100" => 15.85,
+      "01101" => 25.12,
+      "01110" => 25.12,
+      "01111" => 50.12,
+      "10000" => 50.12,
+      "10001" => 100,
+      "10010" => 100,
+      "10011" => 251.19,
+      "10100" => 251.19,
+      "10101" => 501.19,
+      "10110" => 501.19,
+      "10111" => 501.19,
+      "11000" => 794.33,
+      "11001" => 794.33,
+      "11010" => 794.33,
+      "11011" => 1258.93,
+      "11100" => 1258.93,
+      "11101" => 1258.93,
+      "11110" => 1584.89,
+      "11111" => 1584.89,
   }
 
   def self.getCwminValue bitstring
-    cwMinPart = bitstring[0..2]
+    cwMinPart = bitstring[0..1]
     @@cwMinDisc[cwMinPart]
   end
 
   def self.getCwmaxValue bitstring
-    cwMaxPart = bitstring[3..6]
+    cwMaxPart = bitstring[2..5]
     @@cwMaxDisc[cwMaxPart]
   end
 
   def self.getSlotlength bitstring
-    slotlengthPart = bitstring[7..11]
+    slotlengthPart = bitstring[6..10]
     @@slotLengthDisc[slotlengthPart]
   end
 
   def self.getTxPower bitstring
-    txPowerPart = bitstring[12..15]
+    txPowerPart = bitstring[11..15]
     @@txPowerDisc[txPowerPart]
   end
 

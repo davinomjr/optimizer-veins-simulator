@@ -3,10 +3,14 @@
 require 'csv'
 require 'pry'
 
-tabelaParcial = '/home/dmtsj/repos/optimizer-veins-simulator/tabela_parcial.csv'
+tabela_parcial = '/home/dmtsj/repos/optimizer-veins-simulator/tabela_parcial.csv'
+results_dir = '/home/dmtsj/repos/optimizer-veins-simulator/results/'
+
+
 cwmin256Dir = '/home/dmtsj/repos/optimizer-veins-simulator/cwmin=256'
 cwmin64Dir = '/home/dmtsj/repos/optimizer-veins-simulator/cwmin=64'
 cwmin32Dir = '/home/dmtsj/repos/optimizer-veins-simulator/cwmin=32'
+cwmin512Dir = '/home/dmtsj/repos/optimizer-veins-simulator/cwmin=32'
 
 
 
@@ -42,25 +46,28 @@ def readFile fileName
 
   averageDelay = (totalDelay / nodeCount).to_s
   averageLostPacket  = (totalLostPacket / nodeCount).to_s
-  averageThroughput  = (totalThroughput / nodeCount).to_s
-  cwmin = fileName[/(?<=v1-cwmin).*(?=-cwmax)/].to_i
-  cwmax =  fileName[/(?<=cwmax).*(?=-s)/].to_i
-  slotlength =  fileName[/(?<=slotlength).*(?=-)/].to_i
-  txPower =  fileName[/(?<=txPower).*(?=.sca)/].to_i
+  averageThroughput  = ((1/totalThroughput) / nodeCount).to_s
+  cwmin = fileName[/(?<=v1-cwmin).*(?=-cwmax)/].to_f
+  cwmax =  fileName[/(?<=cwmax).*(?=-s)/].to_f
+  slotlength =  fileName[/(?<=slotlength).*(?=-)/].to_f
+  txPower =  fileName[/(?<=txPower).*(?=.sca)/].to_f
   "1,#{cwmin},#{cwmax},#{slotlength},#{txPower},#{averageLostPacket},#{averageDelay},#{averageThroughput}"
 end
 
 
-files = Dir.entries(cwmin32Dir)
 resultLines = Array.new()
-
-files.each do |file|
-  resultLines << readFile(cwmin32Dir + "/#{file}") if file != "." && file != ".."
+dirs = Dir.entries(results_dir)
+dirs.each do |dir|
+  next if dir == "." or dir == ".."
+  path = results_dir + dir
+  files = Dir.entries path
+  files.each do |file|
+    resultLines << readFile(path + "/#{file}") if file != "." && file != ".."
+  end
 end
 
-puts resultLines
-
-CSV.open(tabelaParcial, 'a', { col_sep: ",", force_quotes: false }) do |f|
+CSV.open(tabela_parcial, 'a', { col_sep: ",", force_quotes: false }) do |f|
+  f << ["v","cwmin","cwmax","slotlength","txPower","TotalLostPackets_media","delayMedio_media","throughputMedioBPS_media"]
   resultLines.each do |row|
     f << [row]
   end

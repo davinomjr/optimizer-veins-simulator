@@ -8,7 +8,6 @@ class ResultsReader
 
 
   def self.get_sim_results cwMin, cwMax, slotlength, txPower
-    #puts "searching for #{search_space}"
     @@csv.each do |row|
         if row['cwmin'].to_i == cwMin.to_i &&
            row['cwmax'].to_i == cwMax.to_i &&
@@ -17,6 +16,7 @@ class ResultsReader
         return Array.new(1){ [row['TotalLostPackets_media'].to_f, row['delayMedio_media'].to_f, (1/ (row['throughputMedioBPS_media'].to_f))]}
       end
     end
+
 
     return ""
   end

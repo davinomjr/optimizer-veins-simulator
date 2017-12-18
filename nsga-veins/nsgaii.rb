@@ -75,10 +75,10 @@ end
 def calculate_objectives(pop, search_space, bits_per_param, gen = 0, simulations = nil)
   simulations_count = 0
   pop.each do |p|
-    simulations_count += 1
     if simulations.nil? or simulations[p[:bitstring]].nil?
       p[:vector] = decode(p[:bitstring], search_space, bits_per_param)
       simulations[p[:bitstring]] = p[:vector]
+      simulations_count += 1
     else
       p[:vector] = simulations[p[:bitstring]]
     end
@@ -177,23 +177,26 @@ def weighted_sum(x)
 end
 
 def get_paretos(gen, parents)
-  paretos = []
   pop_size = parents.size
+
+  lost_packet_total = 0
+  delay_total = 0
+  throughput_total = 0
+
   parents.each do |sub|
     cwmin = AlgorithmDictionary.getCwminValue sub[:bitstring]
     cwmax = AlgorithmDictionary.getCwmaxValue sub[:bitstring]
     slotlength = AlgorithmDictionary.getSlotlength sub[:bitstring]
     txPower = AlgorithmDictionary.getTxPower sub[:bitstring]
 
-    pareto = [gen, pop_size, cwmin, cwmax, slotlength, txPower]
     sim_results = ResultsReader.get_sim_results(cwmin, cwmax, slotlength, txPower)
-    pareto << sim_results[0][0].to_f
-    pareto << sim_results[0][1].to_f
-    pareto << sim_results[0][2].to_f
-    paretos << pareto
+
+    lost_packet_total += sim_results[0][0].to_f
+    delay_total += sim_results[0][1].to_f
+    throughput_total += sim_results[0][2].to_f
   end
 
-  paretos
+  [[gen, pop_size, 0, 0, 0, 0, lost_packet_total/pop_size, delay_total/pop_size, throughput_total/pop_size]]
 end
 
 def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)

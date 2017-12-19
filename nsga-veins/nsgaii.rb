@@ -176,27 +176,14 @@ def weighted_sum(x)
   return x[:objectives].inject(0.0) {|sum, x| sum+x}
 end
 
-def get_paretos(gen, parents)
-  pop_size = parents.size
+def get_pareto(gen, pop_size, pareto)
+  cwmin = AlgorithmDictionary.getCwminValue pareto[:bitstring]
+  cwmax = AlgorithmDictionary.getCwmaxValue pareto[:bitstring]
+  slotlength = AlgorithmDictionary.getSlotlength pareto[:bitstring]
+  txPower = AlgorithmDictionary.getTxPower pareto[:bitstring]
 
-  lost_packet_total = 0
-  delay_total = 0
-  throughput_total = 0
-
-  parents.each do |sub|
-    cwmin = AlgorithmDictionary.getCwminValue sub[:bitstring]
-    cwmax = AlgorithmDictionary.getCwmaxValue sub[:bitstring]
-    slotlength = AlgorithmDictionary.getSlotlength sub[:bitstring]
-    txPower = AlgorithmDictionary.getTxPower sub[:bitstring]
-
-    sim_results = ResultsReader.get_sim_results(cwmin, cwmax, slotlength, txPower)
-
-    lost_packet_total += sim_results[0][0].to_f
-    delay_total += sim_results[0][1].to_f
-    throughput_total += sim_results[0][2].to_f
-  end
-
-  [[gen, pop_size, 0, 0, 0, 0, lost_packet_total/pop_size, delay_total/pop_size, throughput_total/pop_size]]
+  sim_results = ResultsReader.get_sim_results(cwmin, cwmax, slotlength, txPower)
+  return [[gen, pop_size, cwmin, cwmax, slotlength, txPower,sim_results[0][0].to_f,sim_results[0][1].to_f,sim_results[0][2].to_f ]]
 end
 
 def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
@@ -237,7 +224,7 @@ def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
     best = gen_parents.first
 
     #best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
-    gen_result.paretos = get_paretos(gen+1, gen_parents)
+    #gen_result.paretos = get_paretos(gen+1, gen_parents)
     gen_result.simulations_count = simulations_count
 
     bitstring = best[:bitstring]
@@ -248,13 +235,15 @@ def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
     best_txPower = AlgorithmDictionary.getTxPower(bitstring)
 
     puts " > gen=#{gen+1}, fronts=#{fronts.size}, best= cwMin(#{best_cwMin.to_s}), cwMax(#{best_cwMax.to_s}), Slotlength(#{best_slotlength.to_s}), TxPower(#{best_txPower.to_s})}"
+    gen_result.paretos = get_pareto(gen + 1, pop_size, best)
     results << gen_result
   end
   union = pop + children
   fronts = fast_nondominated_sort(union)
   parents = select_parents(fronts, pop_size)
-
-  results[max_gens-1].paretos = get_paretos(max_gens, parents)
+  best = parents.first
+  results[max_gens-1].paretos = get_pareto(max_gens, pop_size, best)
+  #results[max_gens-1].paretos = get_paretos(max_gens, parents)
   return results
 end
 

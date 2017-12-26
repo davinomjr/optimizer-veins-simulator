@@ -100,19 +100,111 @@ O algoritmo NSGA-II busca então pelo pareto \textit{front} com os melhores resu
 
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.25]{figures/bits-config.pdf}
+  \includegraphics[scale=0.40]{figures/bits-config.pdf}
   \caption{Indivíduo utilizado no algoritmo representando uma dada configuração para simulação.}
   \label{fig:bits-config}
 \end{figure}
 
 
-\paragraph{Resultados}
+\section{Resultados}
 
 Para execução do algoritmo NSGA-II, foi utilizada uma taxa de \textit{crossover} de 0.98\%, como consta em [9], bem como 50 gerações.
-Foi utilizada uma população de 5 a 50 indivíduos...
+A população utilizada variou de 5 a 50, incrementando de 5 em 5. Os resultados em termos de \textit{throughput}, perda de pacotes e \textit{delay}
+podem ser encontrados nas figuras ~\ref{fig:result-throughput},~\ref{fig:result-perda} e ~\ref{fig:result-delay}.
+
+Em termos de \textit{throughput}, pode-se observar que os resultados convergem rapidamente, logo a partir das primeiras gerações, com poucas ocorrências de \textit{outliers} (como visto na 35 geração).
+Pode-se observar também que, uma população menor que 30 indíviduos não apresenta convergência ou mesmo resultados ótimos.
+È importante notar que utiliza-se 1/throughput em virtude dos valores simulados do throughput serem muito baixos.
+
+Em termos de perda de pacotes, os resultados apresentam convergir a partir de 35 gerações. Nota-se que, com uma população abaixo de 50 indivíduos, ocorre uma alta taxa de variação de resultados,
+sugerindo que populações com mais indivíduos podem ser utilizadas a fim de minimizar a perda de pacotes.
+
+Em termos de \textit{delay}, populações acima de 40 indivíduos obtém resultados convergentes logo de início, o que sugere a otimização do algoritmo NSGA-II em obter resultados ótimos.
+Populações abaixo de 40 indivíduos mostraram-se ineficazes em minimizar o \textit{delay}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.30]{figures/GeracoesXThroughput.pdf}
+  \caption{Resultado em termos de gerações por média de 1/Throughput alcançados nas simulações.}
+  \label{fig:result-throughput}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.30]{figures/GeracoesXPerdaPacotes.pdf}
+  \caption{Resultado em termos de gerações por média de perda de pacotes alcançados nas simulações.}
+  \label{fig:result-perda}
+\end{figure}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.30]{figures/GeracoesXDelay.pdf}
+  \caption{Resultado em termos de gerações por média de delay alcançados nas simulações.}
+  \label{fig:result-delay}
+\end{figure}
+
+
+\subsection{Simulações por Geração}
+
+Com a população variando de 5 a 50 indivíduos, o número de simulações
+aumenta proporcionalmente ao número de indivíduos e gerações, como
+pode ser observado na figura ~\ref{fig:result-sim}.
+Observa-se que o número de simulações chega a pouco menos de 2500 para uma população de
+50 indivíduos, consistindo em um alto número de simulações para obter
+resultados ótimos se comparado a poucos indivíduos.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.30]{figures/SimulacoesPorGeracao.pdf}
+  \caption{Número de simulações por geração.}
+  \label{fig:result-sim}
+\end{figure}
+
+\subsection{Comparação com exaustivo}
+
+Os resultados da simulação exaustiva para os cenários propostos neste
+trabalho podem ser comparados com o pareto ótimo dos resultados
+obtidos com o algoritmo NSGA-II. As figuras ~\ref{fig:exaustivo-nsgaii-1},~\ref{fig:exaustivo-nsgaii-2} e ~\ref{fig:exaustivo-nsgaii-3}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.30]{figures/ExaustivoXNsgaii_DelayXThroughput.pdf}
+  \caption{Número de simulações por geração.}
+  \label{fig:result-sim}
+\end{figure}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.30]{figures/ExaustivoXNsgaii_ThroughputXPerdaPacotes.pdf}
+  \caption{Número de simulações por geração.}
+  \label{fig:result-sim}
+\end{figure}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.30]{figures/ExaustivoXNsgaii_DelayXPerdaPacotes.pdf}
+  \caption{Número de simulações por geração.}
+  \label{fig:result-sim}
+\end{figure}
+
 
 
 \section{Conclusão}
+
+Neste trabalho, foi apresentada uma implementação do algoritmo NSGA-II
+como forma de otimizar e alcançar configurações ótimas vizando
+minimizar o número de simulações a serem executadas com o intuito de
+(1) minimizar a perda de pacotes, (2) minimizar o delay e (3)
+maximizar o throughput na comunicação V2V num cenário urbano real.  Os
+resultados mostraram-se satisfatórios, com o algoritmo obtendo uma
+rápida convergência de soluções ótimas com poucas gerações se
+considerada uma população de 40 a 50 indivíduos. No entanto, é visível
+o alto número de simulações necessários para obter tais resultados,
+chegando a pouco mais de 2000 simulações.
+
 
 \nocite{*} % Include everything in the .bib file.
 

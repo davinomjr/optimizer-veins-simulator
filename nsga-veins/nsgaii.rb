@@ -1,3 +1,5 @@
+#! /usr/bin/ruby
+
 # Non-dominated Sorting Genetic Algorithm in the Ruby Programming Language
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
@@ -8,7 +10,6 @@ require 'pry'
 require_relative "dictionary"
 require_relative "results_reader"
 require_relative "results_writer"
-require_relative "chart_plotter"
 require_relative "nsga_result.rb"
 require_relative "simulations_by_gen_writer"
 
@@ -295,6 +296,7 @@ if __FILE__ == $0
 
   algorithm_counter = 10
   pop_size = 0
+  puts "Starting with population size = 5"
   10.times do
     pop_size += 5
     algorithm_counter.times do
@@ -308,5 +310,4 @@ if __FILE__ == $0
 
   ResultsWriter.write_results results, "paretos.csv"
   SimulationsByGenWriter.write_results results, "simulations_by_gen.csv"
-
 end

@@ -3,7 +3,7 @@ require 'csv'
 
 class ResultsReader
 
-  @@resultsFilePath = "/home/dmtsj/repos/optimizer-veins-simulator/tabela_parcial.csv"
+  @@resultsFilePath = "/home/dmtsj/repos/optimizer-veins-simulator/results/tabela_parcial.csv"
   @@csv = CSV.read(@@resultsFilePath, :headers => true)
 
 
@@ -16,7 +16,6 @@ class ResultsReader
         return Array.new(1){ [row['TotalLostPackets_media'].to_f, row['delayMedio_media'].to_f, (1/ (row['throughputMedioBPS_media'].to_f))]}
       end
     end
-
 
     return ""
   end

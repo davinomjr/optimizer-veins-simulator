@@ -12,20 +12,25 @@ require_relative "chart_plotter"
 require_relative "nsga_result.rb"
 require_relative "simulations_by_gen_writer"
 
-# Throughput
-def objective1(vector)
+
+# Perda de pacotes
+def objective3(vector)
+  #return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
   return vector.inject(0.0) {|sum, x| sum + (x**10.0)}
 end
 
 # Delay
 def objective2(vector)
-  return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
+  #return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
+   return vector.inject(0.0) {|sum, x| sum + (x**10.0)}
 end
 
-# Perda de pacotes
-def objective3(vector)
-  return vector.inject(0.0) {|sum, x| sum + ((x-1.0)**2.0)}
+
+# Throughput
+def objective1(vector)
+  return vector.inject(0.0) {|sum, x| sum + (x**10.0)}
 end
+
 
 def decode(bitstring, search_space, bits_per_param)
   cwMin = AlgorithmDictionary.getCwminValue bitstring
@@ -83,7 +88,7 @@ def calculate_objectives(pop, search_space, bits_per_param, gen = 0, simulations
       p[:vector] = simulations[p[:bitstring]]
     end
 
-    p[:objectives] = [objective1(Array.new(1){p[:vector][0][2]}), objective2(Array.new(1){p[:vector][0][1]}), objective3(Array.new(1){p[:vector][0][0]})]
+    p[:objectives] = [objective2(Array.new(1){p[:vector][0][0]}), objective2(Array.new(1){p[:vector][0][1]}), objective3(Array.new(1){p[:vector][0][2]})]
   end
 
   simulations_count
@@ -183,7 +188,7 @@ def get_pareto(gen, pop_size, pareto)
   txPower = AlgorithmDictionary.getTxPower pareto[:bitstring]
 
   sim_results = ResultsReader.get_sim_results(cwmin, cwmax, slotlength, txPower)
-  return [[gen, pop_size, cwmin, cwmax, slotlength, txPower,sim_results[0][0].to_f,sim_results[0][1].to_f,sim_results[0][2].to_f ]]
+  return [gen, pop_size, cwmin, cwmax, slotlength, txPower,sim_results[0][0].to_f,sim_results[0][1].to_f,sim_results[0][2].to_f ]
 end
 
 def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
@@ -203,7 +208,8 @@ def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
   calculate_objectives(children, search_space, bits_per_param, 0, simulations)
 
 
-  max_gens.times do |gen|
+  simulations_count = 0
+  (max_gens + 1).times do |gen|
     gen_result = NSGAResult.new
     gen_result.gen = gen + 1
     gen_result.pop_size = pop_size
@@ -218,33 +224,52 @@ def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
     pop = children
     children = reproduce(selected, pop_size, p_cross)
 
-    simulations_count = calculate_objectives(children, search_space, bits_per_param, gen + 1,simulations)
-    puts "SIMULATIONS GENERATED = #{simulations_count}"
+    simulations_count += calculate_objectives(children, search_space, bits_per_param, gen + 1, simulations)
+    #puts "SIMULATIONS GENERATED = #{simulations_count}"
     gen_parents = parents.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}
     best = gen_parents.first
 
-    #best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
-    #gen_result.paretos = get_paretos(gen+1, gen_parents)
     gen_result.simulations_count = simulations_count
-
-    bitstring = best[:bitstring]
-    puts bitstring
-    best_cwMin = AlgorithmDictionary.getCwminValue(bitstring)
-    best_cwMax = AlgorithmDictionary.getCwmaxValue(bitstring)
-    best_slotlength = AlgorithmDictionary.getSlotlength(bitstring)
-    best_txPower = AlgorithmDictionary.getTxPower(bitstring)
-
-    puts " > gen=#{gen+1}, fronts=#{fronts.size}, best= cwMin(#{best_cwMin.to_s}), cwMax(#{best_cwMax.to_s}), Slotlength(#{best_slotlength.to_s}), TxPower(#{best_txPower.to_s})}"
-    gen_result.paretos = get_pareto(gen + 1, pop_size, best)
+    gen_result.pareto = get_pareto(gen + 1, pop_size, best)
     results << gen_result
   end
-  union = pop + children
-  fronts = fast_nondominated_sort(union)
-  parents = select_parents(fronts, pop_size)
-  best = parents.first
-  results[max_gens-1].paretos = get_pareto(max_gens, pop_size, best)
-  #results[max_gens-1].paretos = get_paretos(max_gens, parents)
+
+  # union = pop + children
+  # fronts = fast_nondominated_sort(union)
+  # parents = select_parents(fronts, pop_size)
+  # best = parents.first
+  # results[max_gens-1].pareto = get_pareto(max_gens, pop_size, best)
   return results
+end
+
+def generates_results(results_pop_size, sim_counter, max_gens)
+
+  final_results = []
+  results_pop_size.each do |key, array|
+    lost_packet_t = {}
+    delay_medio_t = {}
+    throughput_t = {}
+    simulations_t  = {}
+    array.each do |result|
+      result.each do |sim|
+        lost_packet_t[sim.gen] = 0 if lost_packet_t[sim.gen].nil?
+        delay_medio_t[sim.gen] = 0 if delay_medio_t[sim.gen].nil?
+        throughput_t[sim.gen] = 0 if throughput_t[sim.gen].nil?
+        simulations_t[sim.gen] = 0 if simulations_t[sim.gen].nil?
+
+        lost_packet_t[sim.gen] += sim.pareto[6].to_f
+        delay_medio_t[sim.gen] += sim.pareto[7].to_f
+        throughput_t[sim.gen] += sim.pareto[8].to_f
+        simulations_t[sim.gen] += sim.simulations_count
+      end
+    end
+
+    max_gens.times do |gen|
+      final_results << [gen+1, key, lost_packet_t[gen+1]/sim_counter, delay_medio_t[gen+1]/sim_counter,throughput_t[gen+1]/sim_counter,simulations_t[gen+1]/sim_counter]
+    end
+  end
+
+  final_results
 end
 
 if __FILE__ == $0
@@ -254,13 +279,34 @@ if __FILE__ == $0
   p_cross = 0.98
   max_gens = 50
 
+  results_pop_size = {
+      5 => [],
+      10 => [],
+      15 => [],
+      20 => [],
+      25 => [],
+      30 => [],
+      35 => [],
+      40 => [],
+      45 => [],
+      50 => []
+  }
+
+
+  algorithm_counter = 10
   pop_size = 0
-  (0..9).each do
+  10.times do
     pop_size += 5
-    results = search(search_space, max_gens, pop_size, p_cross)
-    ResultsWriter.write_results results, "paretos.csv"
-    SimulationsByGenWriter.write_results results.select{|result| [result.gen, result.pop_size, result.simulations_count]}, "simulations_by_gen.csv"
+    algorithm_counter.times do
+      results_pop_size[pop_size] << search(search_space, max_gens, pop_size, p_cross)
+    end
+
+    puts "Finished with population size = #{pop_size}"
   end
 
-  puts "Done with pop_size = #{pop_size}!"
+  results = generates_results results_pop_size, algorithm_counter, max_gens
+
+  ResultsWriter.write_results results, "paretos.csv"
+  SimulationsByGenWriter.write_results results, "simulations_by_gen.csv"
+
 end

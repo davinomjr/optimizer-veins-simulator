@@ -99,6 +99,17 @@ Os parâmetros de configuração definidos foram a Potência de Transmissão (\t
 A representação do indivíduo no algoritmo NSGA-II se dá por um mapa de 16 bits.  Cada indivíduo é dividido de forma a representar os quatro parâmetros de configuração utilizados no simulador e descritos na seção ~\ref{subsec:param-config}, a saber (1) $CW_{min}$, (2) $CW_{max}$, (3) slot length, e (4) txPower, como mostra a figura ~\ref{fig:bits-config}.  A simulação consiste em efetuar o \textit{parse} desse indivíduo para uma dada configuracão, isto é, um valor para cada parãmetro, e buscar essa configuração no arquivo resultante da busca exaustiva. Uma vez encontrados os resultados da simulação realizada com os parâmetros de configuração do indivíduo,
 isto é, \textit{throughput}, perda de pacotes e \textit{delay}, são calculadas as respectivas funções objetivo buscando determinar se o indivíduo é ótimo, isto é, se condizem com os objetivos propostos na seção ~\ref{sec:avaliacao-desemp}. O algoritmo NSGA-II busca então pelo pareto \textit{front} com os melhores resultados de simulação para um dado indivíduo (configuração), executando o rankeamento dos paretos não dominados, e os passos de reprodução e \textit{crossover}.
 
+Como função \textit{fictness}, ou função objetivo, foi adaptado a função de Shaffer, como mostra a figura ~\ref{fig:function}.
+Para o algoritmo, Foi utilizada uma taxa de \textit{crossover} de 0.98\% e mutação ponto a ponto (\textit{bitstring}), como apresentado em [9].
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[scale=0.26]{figures/bits-config.png}
+  \caption{Função \textit{fitness} utilizada. A variável X encontra-se num intervalo fechado de -10 a 10.}
+  \label{fig:function}
+\end{figure}
+
+
 \begin{figure}[t]
   \centering
   \includegraphics[scale=0.26]{figures/bits-config.png}
@@ -109,7 +120,7 @@ isto é, \textit{throughput}, perda de pacotes e \textit{delay}, são calculadas
 
 \section{Resultados}
 
-Para execução do algoritmo NSGA-II, foi utilizada uma taxa de \textit{crossover} de 0.98\%, como consta em [9], bem como 50 gerações.
+Para execução do algoritmo NSGA-II, foram utilizadas 50 gerações.
 A população utilizada variou de 5 a 50, incrementando de 5 em 5. Os resultados em termos de \textit{throughput}, perda de pacotes e \textit{delay}
 podem ser encontrados nas figuras ~\ref{fig:result-throughput},~\ref{fig:result-perda} e ~\ref{fig:result-delay}.
 

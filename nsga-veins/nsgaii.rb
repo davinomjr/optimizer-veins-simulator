@@ -16,14 +16,12 @@ require_relative "simulations_by_gen_writer"
 
 # Perda de pacotes
 def objective3(vector)
-  #return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
-  return vector.inject(0.0) {|sum, x| sum + (x**10.0)}
+  return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
 end
 
 # Delay
 def objective2(vector)
-  #return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
-   return vector.inject(0.0) {|sum, x| sum + (x**10.0)}
+  return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
 end
 
 
@@ -89,7 +87,7 @@ def calculate_objectives(pop, search_space, bits_per_param, gen = 0, simulations
       p[:vector] = simulations[p[:bitstring]]
     end
 
-    p[:objectives] = [objective2(Array.new(1){p[:vector][0][0]}), objective2(Array.new(1){p[:vector][0][1]}), objective3(Array.new(1){p[:vector][0][2]})]
+    p[:objectives] = [objective3(Array.new(1){p[:vector][0][0]}), objective2(Array.new(1){p[:vector][0][1]}), objective1(Array.new(1){p[:vector][0][2]})]
   end
 
   simulations_count
@@ -226,7 +224,6 @@ def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
     children = reproduce(selected, pop_size, p_cross)
 
     simulations_count += calculate_objectives(children, search_space, bits_per_param, gen + 1, simulations)
-    #puts "SIMULATIONS GENERATED = #{simulations_count}"
     gen_parents = parents.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}
     best = gen_parents.first
 

@@ -29,12 +29,3 @@ ggplot(data, aes(x=gen, y=throughputMedioBPS_media, group=pop_size, color=pop_si
   xlab("Gerações") +
   ylab("1/Throughput") +
   scale_color_gradientn(colours = rainbow(5))
-
-# Exaustivo
-ggplot(data, aes(x=delayMedio_media, y=throughputMedioBPS_media)) + 
-  geom_point() +
-  scale_shape_identity() +
-  ggtitle("Delay x Throughput") +
-  xlab("Delay") +
-  ylab("Throughput") +
-  scale_color_gradientn(colours = rainbow(5))

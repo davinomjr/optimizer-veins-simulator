@@ -9,4 +9,5 @@ ggplot(data, aes(x=gen, y=simulations, group=pop_size, color=pop_size)) +
   scale_shape_identity() +
   ggtitle("Generations x Simulations") +
   xlab("Generations") +
-  ylab("#Simulations")
+  ylab("#Simulations") +
+  scale_color_gradientn(colours = rainbow(5))

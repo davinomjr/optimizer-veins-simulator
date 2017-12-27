@@ -1,6 +1,6 @@
 # Optimizer Veins Simulator
 
-O algoritmo e respectivas dependências podem ser encontrados na pasta nsga-veins. 
+O algoritmo e arquivos secundários podem ser encontrados na pasta nsga-veins. 
 
 Dependências:
  - Ruby >= 1.9
@@ -17,5 +17,4 @@ Dependências:
   - simulations_gen_lot.r
   - exaustive_compare.r
   
-  Os scripts lêem os arquivos .csv e geram os gráficos de acordo.
- 
+  Os scripts tem o papel de processar os arquivos .csv e gerar os gráficos de acordo.
